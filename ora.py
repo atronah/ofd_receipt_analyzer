@@ -1,6 +1,7 @@
-import click
 import json
 from pprint import pprint
+
+import click
 
 
 @click.group()
