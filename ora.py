@@ -10,9 +10,9 @@ def cli():
      pass
 
 @click.command()
-@click.option('-s', '--seller', help='seller name')
+@click.option('-s', '--seller', help='seller''s name')
 @click.option('-d', '--date', 'search_date_str', help='receipt date (selling date)')
-@click.option('-e', '--email', help='seller email address')
+@click.option('-e', '--email', help='seller''s email address')
 @click.argument('source', type=click.File('rt', encoding='utf8'))
 def search(seller, search_date_str, email, source):
     for receipt_data in json.load(source):
