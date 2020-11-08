@@ -1,5 +1,6 @@
 import json
 from pprint import pprint
+from datetime import datetime
 
 import click
 
@@ -10,8 +11,9 @@ def cli():
 
 @click.command()
 @click.option('-s', '--seller', help='seller name')
+@click.option('-d', '--date', 'search_date_str', help='receipt date (selling date)')
 @click.argument('source', type=click.File('rt', encoding='utf8'))
-def search(seller, source):
+def search(seller, search_date_str, source):
     for receipt_data in json.load(source):
         ticket = receipt_data['ticket']
         document = ticket['document']
@@ -19,6 +21,12 @@ def search(seller, source):
 
         if seller and seller.upper() in receipt.get('user', '').upper():
             pprint(receipt)
+
+        if search_date_str:
+            search_date = datetime.fromisoformat(search_date_str).date()
+            receipt_date = datetime.fromisoformat(receipt['dateTime']).date()
+            if receipt_date == search_date:
+                pprint(receipt)
 
 cli.add_command(search)
 
