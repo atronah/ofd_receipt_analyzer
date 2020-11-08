@@ -16,7 +16,8 @@ def search(seller, source):
         ticket = receipt_data['ticket']
         document = ticket['document']
         receipt = document.get('receipt', None)
-        if seller.upper() in receipt.get('user', '').upper():
+
+        if seller and seller.upper() in receipt.get('user', '').upper():
             pprint(receipt)
 
 cli.add_command(search)
