@@ -9,7 +9,8 @@ import click
 
 @click.group()
 def cli():
-     pass
+    pass
+
 
 @click.command()
 @click.option('-u', '--user', help='user''s name')
