@@ -20,6 +20,9 @@ def cli():
 @click.option('-i', '--inn', help='seller''s INN')
 @click.argument('source', type=click.File('rt', encoding='utf8'))
 def search(user, retailer, search_date_str, email, inn, source):
+    def get_date(d):
+        return datetime.fromisoformat(d).date()
+
     for receipt_data in json.load(source):
         ticket = receipt_data['ticket']
         document = ticket['document']
@@ -28,22 +31,11 @@ def search(user, retailer, search_date_str, email, inn, source):
         if not receipt:
             continue
 
-        if user and user.upper() in receipt.get('user', '').upper():
-            pprint(receipt)
-
-        if retailer and retailer.upper() in receipt.get('retailPlace', '').upper():
-            pprint(receipt)
-
-        if search_date_str:
-            search_date = datetime.fromisoformat(search_date_str).date()
-            receipt_date = datetime.fromisoformat(receipt['dateTime']).date()
-            if receipt_date == search_date:
-                pprint(receipt)
-
-        if email and email.upper() in receipt.get('sellerAddress', '').upper():
-            pprint(receipt)
-
-        if inn and inn in receipt.get('userInn', ''):
+        if user and user.upper() in receipt.get('user', '').upper() \
+                or retailer and retailer.upper() in receipt.get('retailPlace', '').upper() \
+                or search_date_str and get_date(search_date_str) == get_date(receipt['dateTime']) \
+                or email and email.upper() in receipt.get('sellerAddress', '').upper() \
+                or inn and inn in receipt.get('userInn', ''):
             pprint(receipt)
 
 
