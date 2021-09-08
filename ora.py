@@ -22,6 +22,8 @@ def search(seller, search_date_str, email, inn, source):
         receipt = document.get('receipt', None)
 
         if seller and seller.upper() in receipt.get('user', '').upper():
+        if not receipt:
+            continue
             pprint(receipt)
 
         if search_date_str:
