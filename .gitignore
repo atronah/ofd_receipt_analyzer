@@ -1,3 +1,7 @@
 .idea/**
 venv/**
 *.json
+./untracked/**
+.python-version
+.DS_Store
+*.egg-info/**
